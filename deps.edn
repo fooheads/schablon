@@ -1,0 +1,13 @@
+{:paths ["src"]
+
+ :aliases {:test {:extra-paths ["test"]
+                  :extra-deps
+                  {lambdaisland/kaocha           {:mvn/version "1.0.672"}
+                   lambdaisland/kaocha-junit-xml {:mvn/version "0.0.76"}
+                   lambdaisland/kaocha-cljs      {:mvn/version "0.0-71"}}
+
+                  :main-opts  ["-m" "kaocha.runner" "clj" "cljs"
+                               "--plugin" "capture-output"
+                               "--plugin" "junit-xml"
+                               "--junit-xml-file" "target/kaocha/unit-test-result.xml"]}}}
+

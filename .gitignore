@@ -12,3 +12,9 @@ pom.xml.asc
 .lein-failures
 .nrepl-port
 .cpcache/
+
+.cljs_node_repl/
+node_modules/
+out
+package-lock.json
+package.json
