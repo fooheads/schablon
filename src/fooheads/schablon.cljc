@@ -7,6 +7,10 @@
   (and (symbol? x) (str/starts-with? (str x) "?")))
 
 
+(defn- path? [x]
+  (and (vector? x) (-> x meta :path)))
+
+
 (defn- variable->keyword [v]
   (-> v (str) (str/replace #"^\?" "") (keyword)))
 
@@ -19,6 +23,10 @@
                       :template template
                       :args args})))
     (get args var-name)))
+
+
+(defn render-path [template args]
+  (get-in args template))
 
 
 (declare render*)
@@ -53,6 +61,7 @@
                                                   :template template
                                                   :args args})))
     (cond
+      (path? template) (render-path template (get-in args context))
       (sequential? template) (render-sequential template (get-in args context))
       (map? template) (render-map template (get-in args context))
       (variable? template) (render-variable template args)

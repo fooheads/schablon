@@ -34,6 +34,11 @@
     (is (= {:a 1} (render {:a '?foo/bar} {:foo/bar 1}))))
 
 
+  (testing "path syntax"
+    (is (= {:x :foo}
+           (render {:x ^:path [:a 0 :c]}
+                   {:a [{:c :foo}]}))))
+
 
   (testing "seqs at root"
     (is (= {:rows [{:row-code 1} {:row-code 2}]}
@@ -75,6 +80,37 @@
 
                        ^{:context [:operations]}
                        [{:oid '?operation-id}]}]}}
+
+                   {:jobs [{:job-id 1
+                            :operations
+                            [{:operation-id 100}
+                             {:operation-id 101}]}
+                           {:job-id 2
+                            :operations
+                            [{:operation-id 200}
+                             {:operation-id 201}]}]})))
+
+    ;; same thing with path syntax
+    (is (= {:wo
+            {:jobs
+             [{:jid 1
+               :ops
+               [{:oid 100}
+                {:oid 101}]}
+              {:jid 2
+               :ops
+               [{:oid 200}
+                {:oid 201}]}]}}
+
+           (render {:wo
+                    {:jobs
+
+                     ^{:context [:jobs]}
+                     [{:jid ^:path [:job-id]
+                       :ops
+
+                       ^{:context [:operations]}
+                       [{:oid ^:path [:operation-id]}]}]}}
 
                    {:jobs [{:job-id 1
                             :operations
@@ -136,5 +172,4 @@
            (render {:url ^{:render-as :vector} ['?scheme "://" '?host]}
 
                    {:scheme "https" :host "google.com"})))))
-
 
